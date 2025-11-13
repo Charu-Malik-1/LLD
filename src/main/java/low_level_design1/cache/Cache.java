@@ -1,6 +1,6 @@
-package low_level_design.cache;
+package low_level_design1.cache;
 
-import low_level_design.cache.policies.PolicyInterface;
+import low_level_design1.cache.policies.PolicyInterface;
 import lombok.Getter;
 
 import java.util.HashMap;

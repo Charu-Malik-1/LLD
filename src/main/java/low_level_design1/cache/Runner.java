@@ -1,7 +1,7 @@
-package low_level_design.cache;
+package low_level_design1.cache;
 
-import low_level_design.cache.enums.EvictionPolicyType;
-import low_level_design.cache.policies.EvictionPolicyFactory;
+import low_level_design1.cache.enums.EvictionPolicyType;
+import low_level_design1.cache.policies.EvictionPolicyFactory;
 
 public class Runner {
     public static void main(String[] args) {

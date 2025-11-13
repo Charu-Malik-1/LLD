@@ -1,6 +1,6 @@
-package low_level_design.cache.policies;
+package low_level_design1.cache.policies;
 
-import low_level_design.cache.enums.EvictionPolicyType;
+import low_level_design1.cache.enums.EvictionPolicyType;
 
 public class EvictionPolicyFactory {
 

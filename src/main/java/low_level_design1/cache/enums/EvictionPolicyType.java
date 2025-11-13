@@ -1,4 +1,4 @@
-package low_level_design.cache.enums;
+package low_level_design1.cache.enums;
 
 public enum EvictionPolicyType {
     LFU,
