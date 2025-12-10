@@ -2,9 +2,6 @@ package low_level_design1.my_vendingMachine.states;
 
 import low_level_design1.my_vendingMachine.enums.VMState;
 import low_level_design1.my_vendingMachine.model.VendingMachine;
-import low_level_design1.my_vendingMachine.services.AmountService;
-import low_level_design1.my_vendingMachine.services.InventoryService;
-import org.hibernate.engine.transaction.jta.platform.internal.SynchronizationRegistryBasedSynchronizationStrategy;
 
 public class ReturnAmountState implements StateInterface {
     private final VendingMachine vm;

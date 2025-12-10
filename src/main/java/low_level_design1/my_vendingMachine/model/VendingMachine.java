@@ -14,9 +14,10 @@ public class VendingMachine {
     private StateInterface currentState;
     private Inventory inventory;
 
-    public VendingMachine() {
+    public VendingMachine(Inventory inventory) {
         currentAmount = 0;
         currentState = new NoCoinState(this);
+        this.inventory=inventory;
     }
 
     public void changeState(StateInterface curState) {

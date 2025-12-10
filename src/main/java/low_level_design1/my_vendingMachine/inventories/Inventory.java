@@ -21,7 +21,7 @@ public class Inventory {
         }
     }
 
-    void addProduct(Product p) {
+    public void addProduct(Product p) {
         int availableQty = 0;
         if (productIdToQtyMapping.containsKey(p.getId())) {
             availableQty = productIdToQtyMapping.get(p.getId());
