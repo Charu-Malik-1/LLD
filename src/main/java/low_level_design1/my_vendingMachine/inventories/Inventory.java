@@ -3,7 +3,6 @@ package low_level_design1.my_vendingMachine.inventories;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import low_level_design1.my_vendingMachine.model.Product;
-
 import java.util.*;
 
 @Getter
@@ -30,7 +29,7 @@ public class Inventory {
         } else {
             int aiselId = availableAisel.poll();
             aiselToProductMapping.put(aiselId, p);
-            productIdToQtyMapping.put(p.getId(), availableQty);
+            productIdToQtyMapping.put(p.getId(), 1);
         }
     }
 

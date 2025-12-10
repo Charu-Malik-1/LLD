@@ -21,7 +21,7 @@ public class NoCoinState implements StateInterface {
             vm.setCurrentAmount(amount);
             vm.changeState(new HasCoinState(vm));
         } else {
-            // todo
+            System.out.println("Please insert the valid coin");
         }
     }
 

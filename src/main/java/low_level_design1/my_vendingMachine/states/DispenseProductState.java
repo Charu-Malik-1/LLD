@@ -3,7 +3,6 @@ package low_level_design1.my_vendingMachine.states;
 import low_level_design1.my_vendingMachine.enums.VMState;
 import low_level_design1.my_vendingMachine.model.Product;
 import low_level_design1.my_vendingMachine.model.VendingMachine;
-import low_level_design1.my_vendingMachine.services.AmountService;
 import low_level_design1.my_vendingMachine.services.InventoryService;
 
 public class DispenseProductState implements StateInterface {
@@ -19,18 +18,18 @@ public class DispenseProductState implements StateInterface {
 
     @Override
     public void returnCoin() {
-
+        throw new IllegalStateException("Cannot return coin at this point");
     }
 
     @Override
     public void dispenseItem(int aiselNum) {
         // reduce the inventory by 1
-        inventoryService.getItem(aiselNum);
-        Product p = inventoryService.getItem(aiselNum);
-        if (p == null) {
-            // item not avaialble
-        } else {
-            Product p1 = inventoryService.getItem(aiselNum);
+        Product p1 = inventoryService.getItem(aiselNum);
+        if(p1==null){
+         System.out.println("Issue with dispensing machine, returning your money..");
+         vm.changeState(new ReturnAmountState(vm,vm.getCurrentAmount()));
+        }
+        else {
             inventoryService.reduceInventory(p1);
         }
         // also return the remaining amount

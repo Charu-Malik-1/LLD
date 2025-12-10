@@ -24,7 +24,7 @@ public class HasCoinState implements StateInterface {
         if (isAmountValid) {
             vm.setCurrentAmount(amount + vm.getCurrentAmount());
         } else {
-            // todo
+            System.out.println("Inserted coin is not valid coin");
         }
     }
 
@@ -36,7 +36,13 @@ public class HasCoinState implements StateInterface {
           vm.changeState(new DispenseProductState(vm,vm.getCurrentAmount()-p.getPrice()));
         }
         else
-            throw new IllegalStateException("dd");
+        {
+            if(p==null)
+                throw new IllegalStateException("Item not available");
+            else if(p.getPrice()>vm.getCurrentAmount())
+            throw new IllegalStateException("Selected item is of more price");
+        }
+
     }
 
     @Override
