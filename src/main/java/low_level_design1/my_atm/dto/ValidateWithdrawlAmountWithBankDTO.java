@@ -7,9 +7,9 @@ public class ValidateWithdrawlAmountWithBankDTO {
     private final int amount;
     private final int transactionId;
 
-    public ValidateWithdrawlAmountWithBankDTO(int a,int t){
-        this.amount=a;
-        this.transactionId=t;
+    public ValidateWithdrawlAmountWithBankDTO(int amt,int txId){
+        this.amount=amt;
+        this.transactionId=txId;
     }
 
 }

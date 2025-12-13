@@ -4,10 +4,11 @@ import low_level_design1.my_atm.enums.AtmState;
 import low_level_design1.my_atm.model.Atm;
 import low_level_design1.my_atm.model.Card;
 
-public class EjectCardState implements StateInterface{
+public class EjectCardState implements StateInterface {
     private final Atm atm;
-    public EjectCardState(Atm atm){
-        this.atm=atm;
+
+    public EjectCardState(Atm atm) {
+        this.atm = atm;
     }
 
 
@@ -17,12 +18,12 @@ public class EjectCardState implements StateInterface{
     }
 
     @Override
-    public boolean readCardDetailsAndPin(Card card, int pin,int txId) {
+    public boolean readCardDetailsAndPin(Card card, int pin, int txId) {
         return false;
     }
 
     @Override
-    public boolean readCashWithdrawDetails(Card card,int amount, int txId) {
+    public boolean readCashWithdrawDetails(Card card, int amount, int txId) {
         return false;
     }
 

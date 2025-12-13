@@ -6,6 +6,6 @@ public interface CardManagerService {
 
     public boolean validateCardDetails(Card card, int pin, int txnId) ;
 
-    public boolean validateWithdrawl(int txId,int amount) ;
-    public boolean doTransaction(Card card,int amount,int txId) ;
+    public boolean validateWithdrawlAmount(int atmId,int txId,int amount) ;
+    public int doTransaction(int atmId,Card card,int amount) ;
 }

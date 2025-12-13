@@ -7,17 +7,16 @@ import low_level_design1.my_atm.model.Card;
 public class ReadyForTransactionState implements StateInterface {
     private Atm atm;
 
-
     public ReadyForTransactionState(Atm atm) {
         this.atm = atm;
     }
 
     @Override
-    public int startTransaction(Card card) {
+    public int startTransaction(Card card,int amount) {
         // change the atm state in backedn
-        int txId=atm.getStartTransactionService().initTransaction(atm);
+        int txId = atm.getStartTransactionService().initTransaction(atm,card,amount);
         //change the atm state in current physical atm
-        this.atm.changeState(new ReadCardDetailsAndPinState(atm,card));
+        this.atm.changeState(new ReadCardDetailsAndPinState(atm));
         return txId;
     }
 
@@ -27,7 +26,7 @@ public class ReadyForTransactionState implements StateInterface {
     }
 
     @Override
-    public boolean readCashWithdrawDetails(Card card,int amount, int txId) {
+    public boolean readCashWithdrawDetails(Card card, int amount, int txId) {
         throw new IllegalStateException("invalid state at this point");
     }
 

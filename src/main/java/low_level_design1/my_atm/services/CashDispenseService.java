@@ -15,7 +15,8 @@ public class CashDispenseService implements ICashDispenseService {
     @Override
     public boolean dispenseCash(Atm atm, int txId,int amount) {
         //how much amout in atm=
-        int atmAmt = backendApi.getAtmAmount(new GetAtmAmountRequestDTO(atm.getAtmId()));
+        GetAtmAmountRequestDTO g=new GetAtmAmountRequestDTO(atm.getAtmId());
+        int atmAmt = backendApi.getAtmAmount(g);
         if (atmAmt < amount) {
             throw new RuntimeException("");
         }

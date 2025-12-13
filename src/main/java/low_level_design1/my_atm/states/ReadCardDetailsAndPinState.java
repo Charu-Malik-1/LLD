@@ -26,7 +26,7 @@ public class ReadCardDetailsAndPinState implements StateInterface {
         // validate card details with backend
         //if valid change atm state to next state
         //todo add code for card
-        CardManagerService cms=CardManagerFactory.getCardManager(card.getCardType());
+        CardManagerService cms = CardManagerFactory.getCardManager(card.getCardType());
         boolean isValid = cms.validateCardDetails(card, pin, txId);
         if (isValid)
             atm.changeState(new ReadCashWithdrawState(atm));
@@ -36,7 +36,7 @@ public class ReadCardDetailsAndPinState implements StateInterface {
     }
 
     @Override
-    public boolean readCashWithdrawDetails(Card card,int amount, int txId) {
+    public boolean readCashWithdrawDetails(Card card, int amount, int txId) {
         throw new IllegalStateException("invalid state at this point");
     }
 

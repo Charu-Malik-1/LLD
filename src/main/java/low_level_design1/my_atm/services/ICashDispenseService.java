@@ -5,5 +5,5 @@ import low_level_design1.my_atm.model.Atm;
 
 public interface ICashDispenseService {
 
-    public boolean dispenseCash(int txId, int am);
+    public boolean dispenseCash(Atm atm,int txId, int am);
 }

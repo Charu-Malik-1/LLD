@@ -17,15 +17,15 @@ public class ReadCashWithdrawState implements StateInterface {
     }
 
     @Override
-    public boolean readCashWithdrawDetails(Card card,int amount, int txId) {
+    public boolean readCashWithdrawDetails(Card card, int amount, int txId) {
 
 //        ValidateWithdrawlAmountWithBankDTO v=new ValidateWithdrawlAmountWithBankDTO(amount,txId);
-       CardManagerService cm=CardManagerFactory.getCardManager(card.getCardType());
-       boolean isWithdrawValid=cm.validateWithdrawl(txId,amount);
-       if(isWithdrawValid)
-           this.atm.changeState(new DispenseCashState(atm));
-       else
-           this.atm.changeState(new ReadyForTransactionState(atm));
+        CardManagerService cm = CardManagerFactory.getCardManager(card.getCardType());
+        boolean isWithdrawValid = cm.validateWithdrawlAmount(atm.getAtmId(),txId, amount);
+        if (isWithdrawValid)
+            this.atm.changeState(new DispenseCashState(atm));
+        else
+            this.atm.changeState(new ReadyForTransactionState(atm));
         return isWithdrawValid;
 
 //        // check with bank server, if bank atm has sufficient amt

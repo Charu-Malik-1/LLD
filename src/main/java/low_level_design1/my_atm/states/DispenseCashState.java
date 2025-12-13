@@ -17,7 +17,7 @@ public class DispenseCashState implements StateInterface {
         // deduct cash from account and atm
         //service will check for balance from bank server
         // TODO IMP this was we get the services , all services should attach to ATM, not pass from 1 state to other
-        boolean isDispenseSuccess =atm.getCashDispenseService().dispenseCash(traId,amount);
+        boolean isDispenseSuccess =atm.getCashDispenseService().dispenseCash(atm,traId,amount);
         if (isDispenseSuccess) {
             System.out.println("dispense success");
             atm.changeState(new EjectCardState(atm));
