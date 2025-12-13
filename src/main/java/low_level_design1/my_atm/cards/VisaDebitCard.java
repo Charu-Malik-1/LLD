@@ -7,4 +7,14 @@ public class VisaDebitCard extends Card implements DebitCard,VisaCard{
     public VisaDebitCard(CardType cardType) {
         super(cardType);
     }
+
+    @Override
+    public void makePinPayment() {
+        this.connectToVisaNetwork();
+    }
+
+    @Override
+    public void connectToVisaNetwork(){
+        System.out.println("Hi");
+    }
 }

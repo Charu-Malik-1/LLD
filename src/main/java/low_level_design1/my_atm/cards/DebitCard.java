@@ -1,4 +1,6 @@
 package low_level_design1.my_atm.cards;
 
 public interface DebitCard {
+    void makePinPayment();
+    public void connectToVisaNetwork();
 }

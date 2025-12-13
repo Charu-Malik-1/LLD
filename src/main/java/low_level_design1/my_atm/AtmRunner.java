@@ -15,25 +15,24 @@ public class AtmRunner {
         // Step 1: Create all dependencies manually (at application start)
         BackendApi backendApi = new NodeBackendApi();
         IStartTransactionService startTxnService = new StartTransactionService(backendApi);
-        ICardService cardService = new CardService(backendApi);
+        CardManagerService cardService = new DebitCardManagerService(backendApi);
         ICashDispenseService cashDispenseService = new CashDispenseService(backendApi);
 
         // Step 2: Create ATM
-        Atm atm = new Atm(1001);
+        Atm atm = new Atm(1001,new ReadyForTransactionState());
         System.out.println("ATM ID: " + atm.getAtmId());
         System.out.println("Initial ATM State: " + atm.getAtmState());
         System.out.println();
 
-
         // Set the initial state with all required dependencies
-        StartTransactionState initialState = new StartTransactionState(atm, startTxnService, cardService,cashDispenseService);
+        ReadyForTransactionState initialState = new ReadyForTransactionState(atm, startTxnService, cardService,cashDispenseService);
         atm.changeState(initialState);
 
         System.out.println("ATM ID: " + atm.getAtmId());
         System.out.println("Initial ATM State: " + atm.getAtmState());
         System.out.println();
 
-// Scenario 1: Successful Transaction
+        // Scenario 1: Successful Transaction
         System.out.println("--- Scenario 1: Successful Transaction ---");
         runSuccessfulTransaction(atm, new RupayDebitCard(CardType.DEBIT));
         System.out.println();
@@ -88,8 +87,8 @@ public class AtmRunner {
     }
 
     private static void resetAtm(Atm atm, IStartTransactionService startTxnService,
-                                 ICardService cardService,ICashDispenseService cashDispenseService) {
-        StartTransactionState resetState = new StartTransactionState(atm, startTxnService, cardService,cashDispenseService);
+                                 CardManagerService cardService, ICashDispenseService cashDispenseService) {
+        ReadyForTransactionState resetState = new ReadyForTransactionState(atm, startTxnService, cardService,cashDispenseService);
         atm.changeState(resetState);
         System.out.println("--- ATM Reset to START_TRANSACTION State ---\n");
     }

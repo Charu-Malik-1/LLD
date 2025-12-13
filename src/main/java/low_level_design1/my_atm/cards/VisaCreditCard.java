@@ -7,4 +7,14 @@ public class VisaCreditCard extends Card implements CreditCard,VisaCard{
     public VisaCreditCard(CardType cardType) {
         super(cardType);
     }
+
+    @Override
+    public void makePinPayment() {
+
+    }
+
+    @Override
+    public void connectToVisaNetwork() {
+
+    }
 }

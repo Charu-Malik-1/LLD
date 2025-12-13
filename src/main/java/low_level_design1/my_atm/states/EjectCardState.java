@@ -10,8 +10,9 @@ public class EjectCardState implements StateInterface{
         this.atm=atm;
     }
 
+
     @Override
-    public int startTransaction() {
+    public int startTransaction(Card card) {
         return 0;
     }
 
@@ -21,12 +22,7 @@ public class EjectCardState implements StateInterface{
     }
 
     @Override
-    public boolean readCashWithdrawDetails(int amount, int txId) {
-        return false;
-    }
-
-//    @Override
-    public boolean readCashWithdrawDetails(int amount) {
+    public boolean readCashWithdrawDetails(Card card,int amount, int txId) {
         return false;
     }
 
@@ -37,16 +33,18 @@ public class EjectCardState implements StateInterface{
 
     @Override
     public boolean ejectCard() {
-        return false;
+        atm.changeState(new ReadyForTransactionState());
+        return true;
     }
 
     @Override
     public AtmState getState() {
-        return null;
+        return AtmState.EJECT_CARD;
     }
 
     @Override
-    public void cancelTransaction(int trId) {
-
+    public boolean cancelTransaction(int trId) {
+        atm.changeState(new ReadyForTransactionState(atm));
+        return true;
     }
 }

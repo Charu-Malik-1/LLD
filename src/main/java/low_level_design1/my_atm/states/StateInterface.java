@@ -4,14 +4,11 @@ import low_level_design1.my_atm.enums.AtmState;
 import low_level_design1.my_atm.model.Card;
 
 public interface StateInterface {
-    int startTransaction();
+    int startTransaction(Card card);
     boolean readCardDetailsAndPin(Card card, int pin,int txId);
-    boolean readCashWithdrawDetails(int amount,int txId);
-
-    boolean readCashWithdrawDetails(int amount);
-
+    boolean readCashWithdrawDetails(Card card,int amount, int txId);
     int dispenseCash(int traId, int amount);
     boolean ejectCard();
     AtmState getState();
-    void cancelTransaction(int trId);
+    boolean cancelTransaction(int trId);
 }

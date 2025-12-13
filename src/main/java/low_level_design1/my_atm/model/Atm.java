@@ -3,22 +3,44 @@ package low_level_design1.my_atm.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import low_level_design1.my_atm.enums.AtmState;
+import low_level_design1.atm.dto.UpdateAtmStateDto;
+import low_level_design1.my_atm.apis.BackendApi;
+import low_level_design1.my_atm.apis.NodeBackendApi;
+import low_level_design1.my_atm.services.ICashDispenseService;
+import low_level_design1.my_atm.services.IStartTransactionService;
 import low_level_design1.my_atm.states.StateInterface;
 
 @Getter
 @Setter
 public class Atm {
     private final int atmId;
-    private AtmState atmState;
     private StateInterface currentState;  // ← Added this
 
-    public Atm(int atmId){
-        this.atmId=atmId;
-        atmState=AtmState.IDLE;
+//    IMP this was we get the services , all services should attach to ATM, not pass from 1 state to other
+    private final ICashDispenseService cashDispenseService;
+    private IStartTransactionService startTransactionService;
+
+//    private final BackendApi backendApi;
+
+    public Atm(int atmId, StateInterface s,ICashDispenseService cashDispenseService, IStartTransactionService s1) {
+        this.atmId = atmId;
+        currentState = s;
+        this.cashDispenseService=cashDispenseService;
+        this.startTransactionService=s1;
     }
-    public void changeState(StateInterface stateInterface){
-        this.atmState=stateInterface.getState();
+
+    public void changeState(StateInterface newState) {
+        currentState = newState;
+        // todo update the state in backedn also
+//        this.backendApi.updateStatus(new UpdateAtmStateDto(atmId,newState.getState()));
+    }
+
+    public IStartTransactionService getStartTransactionService(){
+        return startTransactionService;
+    }
+
+    public ICashDispenseService getCashDispenseService(){
+        return cashDispenseService;
     }
     // ← Added these delegate methods:
     public int startTransaction() {
@@ -29,8 +51,8 @@ public class Atm {
         return currentState.readCardDetailsAndPin(card, pin, txId);
     }
 
-    public boolean readCashWithdrawDetails(int amount, int txId) {
-        return currentState.readCashWithdrawDetails(amount, txId);
+    public boolean readCashWithdrawDetails(Card card,int amount, int txId) {
+        return currentState.readCashWithdrawDetails(card,amount, txId);
     }
 
     public int dispenseCash(int txId, int amount) {

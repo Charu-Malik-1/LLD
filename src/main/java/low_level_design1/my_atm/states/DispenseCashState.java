@@ -3,35 +3,35 @@ package low_level_design1.my_atm.states;
 import low_level_design1.my_atm.enums.AtmState;
 import low_level_design1.my_atm.model.Atm;
 import low_level_design1.my_atm.model.Card;
-import low_level_design1.my_atm.services.CashDispenseService;
-import low_level_design1.my_atm.services.ICashDispenseService;
 
 public class DispenseCashState implements StateInterface {
     private final Atm atm;
-    private final ICashDispenseService cashDispenseService;
 
-    public DispenseCashState(Atm atm,ICashDispenseService c) {
+    public DispenseCashState(Atm atm) {
         this.atm = atm;
-        cashDispenseService = c;
     }
 
     @Override
     public int dispenseCash(int traId, int amount) {
-        // deduct cash from accoun and atm
-        boolean isDispensSuccess=cashDispenseService.dispenseCash(traId,amount);
-        if(isDispensSuccess) {
+
+        // deduct cash from account and atm
+        //service will check for balance from bank server
+        // TODO IMP this was we get the services , all services should attach to ATM, not pass from 1 state to other
+        boolean isDispenseSuccess =atm.getCashDispenseService().dispenseCash(traId,amount);
+        if (isDispenseSuccess) {
             System.out.println("dispense success");
             atm.changeState(new EjectCardState(atm));
             return amount;
-        }else{
+        } else {
             System.out.println("dispense success");
+            atm.changeState(new EjectCardState(atm));
         }
         return -1;
     }
 
     @Override
-    public int startTransaction() {
-        return 0;
+    public int startTransaction(Card card) {
+        throw new IllegalStateException("invalid state at this point");
     }
 
     @Override
@@ -40,12 +40,7 @@ public class DispenseCashState implements StateInterface {
     }
 
     @Override
-    public boolean readCashWithdrawDetails(int amount,int txId) {
-        return false;
-    }
-
-    @Override
-    public boolean readCashWithdrawDetails(int amount) {
+    public boolean readCashWithdrawDetails(Card card, int amount, int txId) {
         return false;
     }
 
@@ -56,11 +51,12 @@ public class DispenseCashState implements StateInterface {
 
     @Override
     public AtmState getState() {
-        return null;
+        return AtmState.DISPENSE_CASH;
     }
 
     @Override
-    public void cancelTransaction(int trId) {
-
+    public boolean cancelTransaction(int trId) {
+        atm.changeState(new ReadyForTransactionState(atm));
+        return true;
     }
 }
