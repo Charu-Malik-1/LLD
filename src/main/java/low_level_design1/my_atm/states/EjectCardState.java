@@ -13,7 +13,7 @@ public class EjectCardState implements StateInterface {
 
 
     @Override
-    public int startTransaction(Card card) {
+    public int startTransaction(Card card,int amt) {
         return 0;
     }
 
@@ -34,7 +34,7 @@ public class EjectCardState implements StateInterface {
 
     @Override
     public boolean ejectCard() {
-        atm.changeState(new ReadyForTransactionState());
+        atm.changeState(new ReadyForTransactionState(atm));
         return true;
     }
 

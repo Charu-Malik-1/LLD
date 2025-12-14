@@ -7,4 +7,14 @@ public class RupayCreditCard extends Card implements CreditCard,RupayCard{
     public RupayCreditCard(CardType cardType) {
         super(cardType);
     }
+
+    @Override
+    public void makePinPayment() {
+
+    }
+
+    @Override
+    public void connectToVisaNetwork() {
+
+    }
 }

@@ -4,6 +4,7 @@ import low_level_design1.my_atm.apis.BackendApi;
 import low_level_design1.my_atm.apis.NodeBackendApi;
 import low_level_design1.my_atm.cards.RupayDebitCard;
 import low_level_design1.my_atm.enums.CardType;
+import low_level_design1.my_atm.factories.CardManagerFactory;
 import low_level_design1.my_atm.model.Atm;
 import low_level_design1.my_atm.model.Card;
 import low_level_design1.my_atm.services.*;
@@ -17,10 +18,12 @@ public class AtmRunner {
         BackendApi backendApi = new NodeBackendApi();
         ICashDispenseService cashDispenseService = new CashDispenseService(backendApi);
         IStartTransactionService startTransactionService = new TransactionService(backendApi);
+        CardManagerFactory cardManagerFactory = new CardManagerFactory(backendApi);
 
 
         // Step 2: Create ATM
-        Atm atm = new Atm(1001, cashDispenseService, startTransactionService);
+        int initialAtmAmount = 10000;
+        Atm atm = new Atm(1001, initialAtmAmount, cashDispenseService, startTransactionService, cardManagerFactory);
         System.out.println("ATM ID: " + atm.getAtmId());
         System.out.println("Initial ATM State: " + atm.getCurrentState().getState());
         System.out.println();
@@ -55,7 +58,8 @@ public class AtmRunner {
         // ATM delegates to current state (StartTransactionState)
         // State transitions internally to ReadCardDetailsAndPinState
         System.out.println("Step 1: Starting transaction...");
-        int txnId = atm.startTransaction(card);
+        int amountToDispense = 1000;
+        int txnId = atm.startTransaction(card, amountToDispense);
         System.out.println("Current State: " + atm.getCurrentState().getState() + "\n");
 
         // Step 2: Read Card Details
@@ -69,14 +73,14 @@ public class AtmRunner {
         // ATM delegates to current state (ReadCashWithdrawState)
         // State transitions internally to DispenseCashState
         System.out.println("Step 3: Processing withdrawal...");
-        atm.readCashWithdrawDetails(card, 5000, txnId);
+        atm.readCashWithdrawDetails(card, amountToDispense, txnId);
         System.out.println("Current State: " + atm.getCurrentState().getState() + "\n");
 
         // Step 4: Dispense Cash
         // ATM delegates to current state (DispenseCashState)
         // State transitions internally to EjectCardState
         System.out.println("Step 4: Dispensing cash...");
-        atm.dispenseCash(txnId, 5000);
+        atm.dispenseCash(txnId, amountToDispense);
         System.out.println("Current State: " + atm.getCurrentState().getState() + "\n");
 
         // Step 5: Eject Card

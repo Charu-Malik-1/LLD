@@ -7,4 +7,14 @@ public class RupayDebitCard extends Card implements DebitCard,RupayCard{
     public RupayDebitCard(CardType cardType) {
         super(cardType);
     }
+
+    @Override
+    public void makePinPayment() {
+
+    }
+
+    @Override
+    public void connectToVisaNetwork() {
+
+    }
 }

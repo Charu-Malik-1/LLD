@@ -20,8 +20,7 @@ public class ReadCashWithdrawState implements StateInterface {
     public boolean readCashWithdrawDetails(Card card, int amount, int txId) {
 
 //        ValidateWithdrawlAmountWithBankDTO v=new ValidateWithdrawlAmountWithBankDTO(amount,txId);
-        CardManagerService cm = CardManagerFactory.getCardManager(card.getCardType());
-        boolean isWithdrawValid = cm.validateWithdrawlAmount(atm.getAtmId(),txId, amount);
+        boolean isWithdrawValid = atm.getCardManager(card.getCardType()).validateWithdrawlAmount(atm.getAtmId(),txId, amount);
         if (isWithdrawValid)
             this.atm.changeState(new DispenseCashState(atm));
         else
@@ -39,7 +38,7 @@ public class ReadCashWithdrawState implements StateInterface {
     }
 
     @Override
-    public int startTransaction(Card card) {
+    public int startTransaction(Card card,int amt) {
         throw new IllegalStateException("invalid state at this point");
     }
 

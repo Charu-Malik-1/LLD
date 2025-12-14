@@ -1,8 +1,8 @@
 package low_level_design1.my_atm.apis;
 
-import low_level_design1.atm.dto.CreateTransactionDTO;
-import low_level_design1.atm.dto.GetAtmAmountRequestDTO;
-import low_level_design1.atm.dto.UpdateAtmStateDto;
+import low_level_design1.my_atm.dto.CreateTransactionDTO;
+import low_level_design1.my_atm.dto.UpdateAtmStateDto;
+import low_level_design1.my_atm.dto.GetAtmAmountRequestDTO;
 import low_level_design1.my_atm.dto.ValidateCardDetailsDTO;
 import low_level_design1.my_atm.dto.ValidateWithdrawlAmountWithBankDTO;
 
