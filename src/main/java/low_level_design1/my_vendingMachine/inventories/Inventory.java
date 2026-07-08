@@ -1,8 +1,8 @@
 package low_level_design1.my_vendingMachine.inventories;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import low_level_design1.my_vendingMachine.model.Product;
+
 import java.util.*;
 
 @Getter
@@ -40,10 +40,11 @@ public class Inventory {
             int qty = productIdToQtyMapping.get(id);
             if (qty == 1) {
                 productIdToQtyMapping.remove(id);
-                Iterator<Integer> it=aiselToProductMapping.keySet().iterator();
-                for(Map.Entry<Integer, Product> entry: aiselToProductMapping.entrySet()){
-                    if(entry.getValue().getId()==id){
-                        int aiselNum=entry.getKey();
+                Iterator<Map.Entry<Integer,Product>> it = aiselToProductMapping.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry<Integer, Product> entry = it.next();
+                    if (entry.getValue().getId() == id) {
+                        int aiselNum = entry.getKey();
                         aiselToProductMapping.remove(aiselNum);
                         availableAisel.add(aiselNum);
                     }

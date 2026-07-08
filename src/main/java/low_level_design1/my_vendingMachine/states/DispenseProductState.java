@@ -1,19 +1,21 @@
 package low_level_design1.my_vendingMachine.states;
 
 import low_level_design1.my_vendingMachine.enums.VMState;
+import low_level_design1.my_vendingMachine.inventories.Inventory;
 import low_level_design1.my_vendingMachine.model.Product;
 import low_level_design1.my_vendingMachine.model.VendingMachine;
+import low_level_design1.my_vendingMachine.services.AmountService;
 import low_level_design1.my_vendingMachine.services.InventoryService;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DispenseProductState implements StateInterface {
     private final VendingMachine vm;
     private final int returnAmount;
-    private InventoryService inventoryService;
 
     public DispenseProductState(VendingMachine vm, int returnAmt) {
         this.vm = vm;
         returnAmount = returnAmt;
-        inventoryService = new InventoryService();
     }
 
     @Override
@@ -24,13 +26,12 @@ public class DispenseProductState implements StateInterface {
     @Override
     public void dispenseItem(int aiselNum) {
         // reduce the inventory by 1
-        Product p1 = inventoryService.getItem(aiselNum);
-        if(p1==null){
-         System.out.println("Issue with dispensing machine, returning your money..");
-         vm.changeState(new ReturnAmountState(vm,vm.getCurrentAmount()));
-        }
-        else {
-            inventoryService.reduceInventory(p1);
+        Product p1 = vm.getInventoryService().getItem(aiselNum);
+        if (p1 == null) {
+            System.out.println("Issue with dispensing machine, returning your money..");
+            vm.changeState(new ReturnAmountState(vm, vm.getCurrentAmount()));
+        } else {
+            vm.getInventoryService().reduceInventory(p1);
         }
         // also return the remaining amount
         if (returnAmount == 0)

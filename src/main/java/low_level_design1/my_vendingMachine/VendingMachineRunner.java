@@ -3,8 +3,10 @@ package low_level_design1.my_vendingMachine;
 import low_level_design1.my_vendingMachine.inventories.Inventory;
 import low_level_design1.my_vendingMachine.model.Product;
 import low_level_design1.my_vendingMachine.model.VendingMachine;
+import low_level_design1.my_vendingMachine.services.AmountService;
+import low_level_design1.my_vendingMachine.services.InventoryService;
 
-public class Runner {
+public class VendingMachineRunner {
 
     public static void main(String[] args) {
         // creating 5 products
@@ -22,7 +24,10 @@ public class Runner {
         createInventory(inventory, chips, 6);
         createInventory(inventory, chocolate, 3);
 
-        VendingMachine vm = new VendingMachine(inventory);
+        InventoryService inventoryService = new InventoryService(inventory);   // TODO change it to interface
+        AmountService amountService = new AmountService();   // TODO change it to interface
+
+        VendingMachine vm = VendingMachine.getVendingMachineInstance(inventory, inventoryService, amountService);
 
         // Demonstrate vending machine operations
         System.out.println("=== Vending Machine Demo ===\n");
@@ -30,49 +35,49 @@ public class Runner {
         // Scenario 1: Successful purchase with exact amount
         System.out.println("Scenario 1: Buy Cocacola (20 rupees) with exact amount");
         System.out.println("Current State: " + vm.getCurrentState().getState());
-        vm.getCurrentState().insertCoin(20);
+        vm.insertCoin(20);
         System.out.println("Current State after inserting coin: " + vm.getCurrentState().getState());
         System.out.println("Current Amount: " + vm.getCurrentAmount());
-        vm.getCurrentState().selectItem(1); // Aisel 1 has cocacola
+        vm.selectItem(1); // Aisel 1 has cocacola
         System.out.println("Current State after selecting item: " + vm.getCurrentState().getState());
-        vm.getCurrentState().dispenseItem(1);
+        vm.dispenseItem(1);
         System.out.println("Current State after dispensing: " + vm.getCurrentState().getState());
         System.out.println();
 
         // Scenario 2: Purchase with extra amount (change should be returned)
         System.out.println("Scenario 2: Buy Cake (30 rupees) with 50 rupees");
         System.out.println("Current State: " + vm.getCurrentState().getState());
-        vm.getCurrentState().insertCoin(50);
+        vm.insertCoin(50);
         System.out.println("Current Amount: " + vm.getCurrentAmount());
-        vm.getCurrentState().selectItem(3); // Aisel 3 has cake
-        vm.getCurrentState().dispenseItem(3);
+        vm.selectItem(3); // Aisel 3 has cake
+        vm.dispenseItem(3);
         System.out.println("Current State after dispensing: " + vm.getCurrentState().getState());
-        vm.getCurrentState().returnCoin(); // Return the change
+        vm.returnCoin(); // Return the change
         System.out.println("Current State after returning change: " + vm.getCurrentState().getState());
         System.out.println();
 
         // Scenario 3: Insert multiple coins before selecting
         System.out.println("Scenario 3: Buy Chocolate (60 rupees) by inserting multiple coins");
         System.out.println("Current State: " + vm.getCurrentState().getState());
-        vm.getCurrentState().insertCoin(20);
+        vm.insertCoin(20);
         System.out.println("Amount after first coin: " + vm.getCurrentAmount());
-        vm.getCurrentState().insertCoin(20);
+        vm.insertCoin(20);
         System.out.println("Amount after second coin: " + vm.getCurrentAmount());
-        vm.getCurrentState().insertCoin(20);
+        vm.insertCoin(20);
         System.out.println("Amount after third coin: " + vm.getCurrentAmount());
-        vm.getCurrentState().selectItem(5); // Aisel 5 has chocolate
-        vm.getCurrentState().dispenseItem(5);
+        vm.selectItem(5); // Aisel 5 has chocolate
+        vm.dispenseItem(5);
         System.out.println("Current State after dispensing: " + vm.getCurrentState().getState());
         System.out.println();
 
         // Scenario 4: Purchase with extra coins and change
         System.out.println("Scenario 4: Buy Chips (40 rupees) with 100 rupees");
-        vm.getCurrentState().insertCoin(100);
+        vm.insertCoin(100);
         System.out.println("Current Amount: " + vm.getCurrentAmount());
-        vm.getCurrentState().selectItem(4); // Aisel 4 has chips
-        vm.getCurrentState().dispenseItem(4);
+        vm.selectItem(4); // Aisel 4 has chips
+        vm.dispenseItem(4);
         System.out.println("Current State: " + vm.getCurrentState().getState());
-        vm.getCurrentState().returnCoin(); // Return 60 rupees change
+        vm.returnCoin(); // Return 60 rupees change
         System.out.println("Final State: " + vm.getCurrentState().getState());
         System.out.println();
 

@@ -2,14 +2,18 @@ package low_level_design1.my_vendingMachine.states;
 
 import low_level_design1.my_vendingMachine.enums.VMState;
 import low_level_design1.my_vendingMachine.model.VendingMachine;
+import low_level_design1.my_vendingMachine.services.AmountService;
+import low_level_design1.my_vendingMachine.services.InventoryService;
 
 public class ReturnAmountState implements StateInterface {
     private final VendingMachine vm;
     private final int returnAmount;
+   // TODO change it to interface
 
     public ReturnAmountState(VendingMachine vm, int returnAmt) {
         this.vm = vm;
         returnAmount = returnAmt;
+
     }
 
     @Override

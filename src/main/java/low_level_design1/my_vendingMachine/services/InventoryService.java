@@ -1,13 +1,18 @@
 package low_level_design1.my_vendingMachine.services;
 
+import lombok.Getter;
+import lombok.Setter;
 import low_level_design1.my_vendingMachine.inventories.Inventory;
 import low_level_design1.my_vendingMachine.model.Product;
 
+@Getter
+@Setter
 public class InventoryService {
+
     private Inventory inventory;
 
-    public InventoryService() {
-        inventory = new Inventory(5);
+    public InventoryService(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public boolean isItemAvailable(Product p) {
