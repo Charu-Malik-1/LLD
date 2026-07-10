@@ -6,22 +6,22 @@ import low_level_design1.my_vendingMachine.services.AmountService;
 
 public class NoCoinState implements StateInterface {
     private final VendingMachine vm;
-    private final AmountService amountService; // TODO change it to interface
+    // TODO change services it to interface
 
     public NoCoinState(VendingMachine vm) {
         this.vm = vm;
-        amountService = new AmountService();
     }
 
     @Override
     public void insertCoin(int amount) {
         // validate amount
-        boolean isAmountValid = amountService.validateAmount(amount);
+        boolean isAmountValid = vm.getAmountService().validateAmount(amount);
         if (isAmountValid) {
             vm.setCurrentAmount(amount);
             vm.changeState(new HasCoinState(vm));
         } else {
             System.out.println("Please insert the valid coin");
+
         }
     }
 

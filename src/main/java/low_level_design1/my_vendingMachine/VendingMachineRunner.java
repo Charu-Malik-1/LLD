@@ -3,8 +3,10 @@ package low_level_design1.my_vendingMachine;
 import low_level_design1.my_vendingMachine.inventories.Inventory;
 import low_level_design1.my_vendingMachine.model.Product;
 import low_level_design1.my_vendingMachine.model.VendingMachine;
+import low_level_design1.my_vendingMachine.services.AmountService;
+import low_level_design1.my_vendingMachine.services.InventoryService;
 
-public class Runner {
+public class VendingMachineRunner {
 
     public static void main(String[] args) {
         // creating 5 products
@@ -22,7 +24,10 @@ public class Runner {
         createInventory(inventory, chips, 6);
         createInventory(inventory, chocolate, 3);
 
-        VendingMachine vm = new VendingMachine(inventory);
+        InventoryService inventoryService=new InventoryService(inventory);
+        AmountService amountService=new AmountService();
+
+        VendingMachine vm = new VendingMachine(inventoryService,amountService);
 
         // Demonstrate vending machine operations
         System.out.println("=== Vending Machine Demo ===\n");
