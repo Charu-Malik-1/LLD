@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //package low_level_design1.my_parking_lot;
 //
 //import low_level_design1.my_parking_lot.factories.FindSlotStrategyFactory;
@@ -50,6 +51,60 @@
 //    }
 //
 //    public static void main(String[] args) {
+=======
+package low_level_design1.my_parking_lot;
+
+import low_level_design1.my_parking_lot.factories.FindSlotStrategyFactory;
+import low_level_design1.my_parking_lot.models.parking_spots.*;
+import low_level_design1.my_parking_lot.models.ticket_and_price.payments.*;
+import low_level_design1.my_parking_lot.models.ticket_and_price.prices.ConstantPriceStrategy;
+import low_level_design1.my_parking_lot.models.ticket_and_price.prices.HourlyPriceStrategy;
+import low_level_design1.my_parking_lot.models.ticket_and_price.prices.PricingStrategy;
+import low_level_design1.my_parking_lot.models.vehicles.*;
+import low_level_design1.my_parking_lot.services.ParkingLotService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Runner {
+    private static ParkingFloor createFloor1() {
+        List<ParkingSlot> slots = new ArrayList<>();
+        ParkingFloor floor = new ParkingFloor(1, slots);
+
+        // Add 2 regular car slots
+        slots.add(new CarParkingSlot(101, floor));
+        slots.add(new CarParkingSlot(102, floor));
+
+        // Add 2 regular bike slots
+        slots.add(new BikeParkingSlot(103, floor));
+        slots.add(new BikeParkingSlot(104, floor));
+
+        // Add 1 electric car slot
+        slots.add(new ElectricCarSlot(105, floor));
+
+        // Add 1 electric bike slot
+        slots.add(new ElectricBikeSlot(106, floor));
+
+        return floor;
+    }
+
+    private static ParkingFloor createFloor2() {
+        List<ParkingSlot> slots = new ArrayList<>();
+        ParkingFloor floor = new ParkingFloor(2, slots);
+
+        // Add 2 regular car slots
+        slots.add(new CarParkingSlot(201, floor));
+        slots.add(new CarParkingSlot(202, floor));
+
+        // Add 2 regular bike slots
+        slots.add(new BikeParkingSlot(203, floor));
+        slots.add(new BikeParkingSlot(204, floor));
+
+        return floor;
+    }
+
+    public static void main(String[] args) {
+>>>>>>> baf344a52508b3f211918526d6637b0c4cf92609
 //        //create price strategy
 //        List<PricingStrategy> pricingStrategies = new ArrayList<>();
 //        pricingStrategies.add(new HourlyPriceStrategy(40, 1L));
@@ -187,5 +242,10 @@
 //        System.out.println();
 //
 //        System.out.println("========== ALL TESTS COMPLETED ==========");
+<<<<<<< HEAD
 //    }
 //}
+=======
+    }
+}
+>>>>>>> baf344a52508b3f211918526d6637b0c4cf92609
