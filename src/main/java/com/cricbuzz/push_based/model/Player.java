@@ -1,4 +1,4 @@
-package com.cricbuzz.pull_based.model;
+package com.cricbuzz.push_based.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
