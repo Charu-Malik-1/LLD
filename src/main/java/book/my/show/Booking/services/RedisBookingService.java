@@ -88,12 +88,15 @@ public class RedisBookingService implements BookingService {
 
         // 2. if user has lock for all the seats then we will book the seat
         // for this go to all the rows of show_seat and update the status to booked in one query
+        // go to all the rows of show_seats and update the status to booked in one query
+
         Ticket t = createTicketAndBookSeats(show, showSeatIds, user);
         System.out.println("ticket created");
         return Optional.of(t);
     }
 
 
+    @Transactional(isolation =Isolation.SERIALIZABLE)
     protected Ticket createTicketAndBookSeats(Show show, List<Long> showSeatIds, User1 user) {
         // 1. create new ticket
         Ticket ticket = new Ticket();
@@ -112,3 +115,19 @@ public class RedisBookingService implements BookingService {
         cacheService.deleteAll();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

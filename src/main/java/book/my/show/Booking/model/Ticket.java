@@ -27,6 +27,4 @@ public class Ticket extends BaseModel{
 
     @Enumerated(EnumType.ORDINAL)
     private TicketStatus status;
-
-
 }

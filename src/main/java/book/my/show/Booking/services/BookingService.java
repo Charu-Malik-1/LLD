@@ -9,10 +9,14 @@ import java.util.Optional;
 @Service
 public interface BookingService {
 
-    boolean blockSeats(long showId, List<Long> seatIds,long userId);
+    // Boolean fun that tell if able to block the seat or not.
+    boolean blockSeats(long showId, List<Long> seatIds, long userId);
 
     // This will be transactional
-    Optional<Ticket> bookTicket(long showId,List<Long> seatIds,long userId);
+    Optional<Ticket> bookTicket(long showId, List<Long> showSeatIds, long userId);
 
     void clearAllSeatLocks();
 }
+
+
+

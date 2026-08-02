@@ -14,12 +14,13 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
+
         return new LettuceConnectionFactory("localhost", 6379);
     }
 
     @Bean
-    public RedisTemplate<String,String> redisTemplate(){
-        RedisTemplate<String,String> redisTemplate=new RedisTemplate<>();
+    public RedisTemplate<String, String> redisTemplate() {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());

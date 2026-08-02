@@ -1,7 +1,7 @@
 package book.my.show.Booking.controller;
 
 import book.my.show.Booking.dto.BlockSeatsRequestDto;
-import book.my.show.Booking.dto.BookSeatRequestDTO;
+import book.my.show.Booking.dto.BookSeatsRequestDto;
 import book.my.show.Booking.model.Ticket;
 import book.my.show.Booking.services.BookingService;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +30,17 @@ public class BookingController {
     }
 
     @PostMapping("/confirm")
-    public void confirmBooking(@RequestBody BookSeatRequestDTO bookSeatRequestDTO){
-         bookingService.bookTicket(bookSeatRequestDTO.getShowId(),bookSeatRequestDTO.getSeatsId(),
+    public Optional<Ticket> confirmBooking(@RequestBody BookSeatsRequestDto bookSeatRequestDTO){
+         return bookingService.bookTicket(bookSeatRequestDTO.getShowId(),bookSeatRequestDTO.getSeatsId(),
                 bookSeatRequestDTO.getUserId());
     }
 
 
 }
+
+
+
+
+
+
+
