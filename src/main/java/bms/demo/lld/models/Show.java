@@ -1,10 +1,7 @@
 package bms.demo.lld.models;
-
-//import bms.demo.lld.services.SearchService;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.*;
-import java.util.concurrent.locks.ReentrantLock;
 
 @Getter
 @Setter
@@ -14,11 +11,6 @@ public class Show extends BaseModel {
     private Date endTime;
     private Map<String, ShowSeat> showSeatMap;
     private Movie movie;
-    private final ReentrantLock showLock = new ReentrantLock();
-
-    public ReentrantLock getShowLock() {
-        return showLock;
-    }
 
     public Show(String showId, Movie movie,Date startTime, Date endTime) {
         this.id = showId;
@@ -45,9 +37,4 @@ public class Show extends BaseModel {
             System.out.println();
         }
     }
-
-//    public void print(){
-//        System.out.println("id="+id+" ,startTime="+startTime+" ,endTime="+endTime+" ,movie=");
-//        movie.print();
-//    }
 }

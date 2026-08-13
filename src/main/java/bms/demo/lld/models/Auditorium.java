@@ -21,7 +21,7 @@ public class Auditorium extends BaseModel {
     private int column;
     private Seat seatMetrix[][];
     private Map<String, Show> showMap;
-    private Map<Movie,Show> movieShowMap;
+    private Map<Movie,Show> movieShowMap; // use for search service that is not completed
 
     public Auditorium(String auditoriumId, String name, int r, int c) {
         this.id = auditoriumId;

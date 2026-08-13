@@ -14,15 +14,4 @@ public class ShowAuditoriumManager {
         auditorum.addShow(show);
         show.addShowSeat(auditorum.getSeatMetrix());
     }
-
-    public void printAllShowsInAuditorium(Theater t, String aid){
-        if(t.getAuditoriumMap().containsKey(aid)){
-            Auditorium auditorium=t.getAuditoriumMap().get(aid);
-            Map<String,Show> showMap=auditorium.getShowMap();
-            for(Map.Entry<String,Show> e: showMap.entrySet()){
-                System.out.println(e.getKey()+" "+e.getValue());
-
-            }
-        }
-    }
 }

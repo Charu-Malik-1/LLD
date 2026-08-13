@@ -12,7 +12,6 @@ public class ShowSeat extends BaseModel {
     // 1 show has many seats
     private Show show;
     private Seat seat;
-//    private volatile ShowSeatsStatus showSeatsStatus;
     private int cost;
     @Setter(AccessLevel.NONE)
     private volatile ShowSeatsStatus showSeatsStatus;
@@ -58,17 +57,5 @@ public class ShowSeat extends BaseModel {
         showSeatsStatus = ShowSeatsStatus.BOOKED;
         holdToken = null;
         return true;
-    }
-
-    public synchronized boolean tryMarkBooked() {
-        if (showSeatsStatus == ShowSeatsStatus.BOOKED) {
-            return false;
-        }
-        showSeatsStatus = ShowSeatsStatus.BOOKED;
-        return true;
-    }
-
-    public synchronized void release() {
-        showSeatsStatus = ShowSeatsStatus.AVAILABLE;
     }
 }

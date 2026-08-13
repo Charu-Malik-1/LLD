@@ -81,3 +81,7 @@ Operations
     - serachMovie
     - bookShow
     
+Remaining
+
+- ticket issue
+- search service
