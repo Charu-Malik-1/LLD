@@ -14,12 +14,14 @@ public class Runner {
     PaymentService paymentService;
     InMemorySchedulerService inMemoryCacheService;
     ShowAuditoriumManager showAuditoriumManager;
+    TicketService ticketService;
 
     public Runner() {
         movieService = new MovieService();
         paymentService = new PaymentService();
         inMemoryCacheService = new InMemorySchedulerService();
-        bookingService = new BookingService(inMemoryCacheService, paymentService);
+        ticketService=new TicketService();
+        bookingService = new BookingService(inMemoryCacheService, paymentService,ticketService);
         showAuditoriumManager = new ShowAuditoriumManager();
     }
 
@@ -35,17 +37,6 @@ public class Runner {
         }
         return null;
     }
-
-//    private Map<String, Seat> initialiseSeats(Auditorium auditorium, int row, int col) {
-//        Map<String, Seat> map = new HashMap<>();
-//        for (int i = 0; i < row; i++) {
-//            for (int j = 0; j < col; j++) {
-//                Seat seat = new Seat(auditorium.getAuditoriumId(), i, j);
-//                map.put(seat.getSeatId(), seat);
-//            }
-//        }
-//        return map;
-//    }
 
     public void runner() {
         City city = new City("city1", "delhi");
@@ -124,10 +115,13 @@ public class Runner {
             List<String> seatIdsForBooking = new ArrayList<>();
             seatIdsForBooking.add("show1-auditorium1-0-8");
             seatIdsForBooking.add("show1-auditorium1-1-8");
-            Booking b = bookingService.createBooking3(theater1, "auditorium1", seatIdsForBooking, "show1",
+            Ticket b = bookingService.createBooking3(theater1, "auditorium1", seatIdsForBooking, "show1",
                     new User1(1, "chry"), new CardPaymentStrategy());
             if (b != null)
-                System.out.println("Booking created for thread 1: " + b.getBookingId());
+            {
+                System.out.println("Booking created for thread 1: " + b.getBooking().getId());
+
+            }
             else System.out.println("No booking created for thread 1");
             System.out.println("-----------------------------------------");
         });
@@ -138,10 +132,10 @@ public class Runner {
             List<String> seatIdsForBooking = new ArrayList<>();
             seatIdsForBooking.add("show1-auditorium1-0-8");
             seatIdsForBooking.add("show1-auditorium1-1-8");
-            Booking b1 = bookingService.createBooking3(theater1, "auditorium1", seatIdsForBooking, "show1",
+            Ticket b1 = bookingService.createBooking3(theater1, "auditorium1", seatIdsForBooking, "show1",
                     new User1(1, "chry"), new CardPaymentStrategy());
             if (b1 != null)
-                System.out.println("Booking created for thread 2: " + b1.getBookingId());
+                System.out.println("Booking created for thread 2: " + b1.getBooking().getId());
             else System.out.println("No booking created for thread 2");
             System.out.println("-----------------------------------------");
         });
@@ -153,8 +147,5 @@ public class Runner {
             Thread.currentThread().interrupt();
         }
         thread2.start();
-
-
-// TODO add multithreading
     }
 }

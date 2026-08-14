@@ -10,17 +10,20 @@ import java.util.Map;
 public class BookingService {
     private InMemorySchedulerService inMemorySchedulerService;
     private PaymentService paymentService;
+    private TicketService ticketService;
 
-    public BookingService(InMemorySchedulerService inMemoryCacheService, PaymentService paymentService) {
+    public BookingService(InMemorySchedulerService inMemoryCacheService, PaymentService paymentService
+    ,TicketService ticketService) {
         this.inMemorySchedulerService = inMemoryCacheService;
         this.paymentService = paymentService;
+        this.ticketService=ticketService;
     }
 
     /**
      * here we are achieving more accuracy as for each showseat , we are generatuing the token and storing in map
      * that tocken shuld be same at the time of making the payment and updating in db
      * */
-    public Booking createBooking3(Theater theater, String auditoriumId, List<String> seatIds,
+    public Ticket createBooking3(Theater theater, String auditoriumId, List<String> seatIds,
                                  String showId, User1 user, IPaymentStrategy paymentStrategy) {
         Auditorium auditorium = theater.getAuditoriumMap().get(auditoriumId);
         Show show = auditorium.getShowMap().get(showId);
@@ -64,10 +67,9 @@ public class BookingService {
             releaseAllShowSeats(finalShowSeatTokenMap);
             return null;
         }
-
-
-
-        return booking;
+        // phase 4 : create ticket (this doest need any lock)
+        Ticket ticket=ticketService.generateTicket(booking);
+        return ticket;
     }
 
     private boolean confirmBooking(Map<ShowSeat, String> finalShowSeatTokenMap) {
@@ -76,7 +78,10 @@ public class BookingService {
             ShowSeat ss = entry.getKey();
             String token = entry.getValue();
             if (!ss.bookSeatInDB(token)) {
-                confirmedShowSeat.forEach(c -> c.release(finalShowSeatTokenMap.get(c)));
+                for (int i = 0; i < confirmedShowSeat.size(); i++) {
+                    ShowSeat prevBookedSeat = confirmedShowSeat.get(i);
+                    prevBookedSeat.release(finalShowSeatTokenMap.get(prevBookedSeat));
+                }
                 return false;
             }
             confirmedShowSeat.add(ss);
@@ -84,8 +89,12 @@ public class BookingService {
         return true;
     }
 
-    private void releaseAllShowSeats(Map<ShowSeat, String> held) {
-        held.forEach((seat, token) -> seat.release(token));
+    private void releaseAllShowSeats(Map<ShowSeat, String> showSeatTokenMap) {
+        for (Map.Entry<ShowSeat, String> e : showSeatTokenMap.entrySet()) {
+            ShowSeat showSeat = e.getKey();
+            String token = e.getValue();
+            showSeat.release(token);
+        }
     }
     private String buildBookingId(Theater theater, Auditorium auditorium, Show show, List<String> seatIds) {
         return theater.getId() + "-" + auditorium.getId() + "-" + show.getId() + "-" + String.join(",", seatIds);

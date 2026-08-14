@@ -8,11 +8,11 @@ import java.util.List;
 
 public class TicketService {
 
-    public Ticket generateTicket(Booking booking,  User1 user,  List<Integer> showSeats) {
-        return new Ticket(booking, user, showSeats);
+    public Ticket generateTicket(Booking booking) {
+        return new Ticket(booking);
     }
 
-    public void print(Ticket ticket) {
-        System.out.println(ticket.getTicketId() + " " + ticket.getAmount() + " " + ticket.getShowSeats() + " ");
-    }
+//    public void print(Ticket ticket) {
+//        System.out.println(ticket.getTicketId() + " " + ticket.getAmount() + " " + ticket.getShowSeats() + " ");
+//    }
 }
