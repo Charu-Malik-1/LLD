@@ -85,3 +85,8 @@ Remaining
 
 - ticket issue
 - search service
+
+
+How we are achieving multithreeading
+        
+    - here we are achieving more accuracy as for each showseat , we are generatuing the token and storing in map that tocken shuld be same at the time of making the payment and updating in db

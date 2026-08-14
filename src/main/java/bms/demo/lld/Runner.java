@@ -12,13 +12,13 @@ public class Runner {
     MovieService movieService;
     BookingService bookingService;
     PaymentService paymentService;
-    InMemoryCacheService inMemoryCacheService;
+    InMemorySchedulerService inMemoryCacheService;
     ShowAuditoriumManager showAuditoriumManager;
 
     public Runner() {
         movieService = new MovieService();
         paymentService = new PaymentService();
-        inMemoryCacheService = new InMemoryCacheService();
+        inMemoryCacheService = new InMemorySchedulerService();
         bookingService = new BookingService(inMemoryCacheService, paymentService);
         showAuditoriumManager = new ShowAuditoriumManager();
     }
