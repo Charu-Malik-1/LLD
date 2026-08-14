@@ -26,4 +26,6 @@ public class Theater extends BaseModel {
     public void addAuditorium(Auditorium auditorium) {
         auditoriumMap.put(auditorium.getId(), auditorium);
     }
+
+
 }

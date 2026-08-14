@@ -1,6 +1,8 @@
 package bms.demo.lld.models;
+
 import lombok.Getter;
 import lombok.Setter;
+
 import java.util.*;
 
 @Getter
@@ -12,12 +14,12 @@ public class Show extends BaseModel {
     private Map<String, ShowSeat> showSeatMap;
     private Movie movie;
 
-    public Show(String showId, Movie movie,Date startTime, Date endTime) {
+    public Show(String showId, Movie movie, Date startTime, Date endTime) {
         this.id = showId;
         this.startTime = startTime;
         this.endTime = endTime;
         showSeatMap = new HashMap<>();
-        this.movie=movie;
+        this.movie = movie;
     }
 
     public void addShowSeat(Seat seatMetrix[][]) {

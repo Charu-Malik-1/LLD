@@ -1,6 +1,6 @@
 package bms.demo.lld.strategy;
 
-public class CashPayment implements IPaymentStrategy {
+public class CashPaymentStrategy implements IPaymentStrategy {
     @Override
     public boolean makePayment() {
         return true;

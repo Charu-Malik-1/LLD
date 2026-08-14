@@ -1,5 +1,7 @@
 package bms.demo.lld;
 
+import bms.demo.lld.enums.PaymentMethod;
+import bms.demo.lld.factory.PaymentStrategyFactory;
 import bms.demo.lld.models.*;
 import bms.demo.lld.services.*;
 import bms.demo.lld.strategy.CardPaymentStrategy;
@@ -13,7 +15,6 @@ public class Runner {
     BookingService bookingService;
     PaymentService paymentService;
     InMemorySchedulerService inMemoryCacheService;
-    ShowAuditoriumManager showAuditoriumManager;
     TicketService ticketService;
 
     public Runner() {
@@ -22,7 +23,6 @@ public class Runner {
         inMemoryCacheService = new InMemorySchedulerService();
         ticketService=new TicketService();
         bookingService = new BookingService(inMemoryCacheService, paymentService,ticketService);
-        showAuditoriumManager = new ShowAuditoriumManager();
     }
 
     private Date getDate(int dd, int mm, int h, int min) {
@@ -78,18 +78,18 @@ public class Runner {
         Show show11 = new Show("show11", movie2, getDate(11, 8, 6, 0), getDate(11, 8, 8, 0));
         Show show12 = new Show("show12", movie2, getDate(11, 8, 9, 0), getDate(11, 8, 11, 0));
 
-        showAuditoriumManager.mapAuditoriumToShow(auditorium1, show1);
-        showAuditoriumManager.mapAuditoriumToShow(auditorium1, show2);
-        showAuditoriumManager.mapAuditoriumToShow(auditorium1, show3);
-        showAuditoriumManager.mapAuditoriumToShow(auditorium2, show4);
-        showAuditoriumManager.mapAuditoriumToShow(auditorium2, show5);
-        showAuditoriumManager.mapAuditoriumToShow(auditorium2, show6);
-        showAuditoriumManager.mapAuditoriumToShow(auditorium3, show7);
-        showAuditoriumManager.mapAuditoriumToShow(auditorium3, show8);
-        showAuditoriumManager.mapAuditoriumToShow(auditorium3, show9);
-        showAuditoriumManager.mapAuditoriumToShow(auditorium4, show10);
-        showAuditoriumManager.mapAuditoriumToShow(auditorium4, show11);
-        showAuditoriumManager.mapAuditoriumToShow(auditorium4, show12);
+        auditorium1.addShow(show1);
+        auditorium1.addShow(show2);
+        auditorium1.addShow(show3);
+        auditorium2.addShow(show4);
+        auditorium2.addShow(show5);
+        auditorium2.addShow(show6);
+        auditorium3.addShow(show7);
+        auditorium3.addShow(show8);
+        auditorium3.addShow(show9);
+        auditorium4.addShow(show10);
+        auditorium4.addShow(show11);
+        auditorium4.addShow(show12);
 
         movieService.addMovie(movie1);
         movieService.addMovie(movie2);
@@ -116,7 +116,7 @@ public class Runner {
             seatIdsForBooking.add("show1-auditorium1-0-8");
             seatIdsForBooking.add("show1-auditorium1-1-8");
             Ticket b = bookingService.createBooking3(theater1, "auditorium1", seatIdsForBooking, "show1",
-                    new User1(1, "chry"), new CardPaymentStrategy());
+                    new User1(1, "chry"), PaymentStrategyFactory.create(PaymentMethod.CASH));
             if (b != null)
             {
                 System.out.println("Booking created for thread 1: " + b.getBooking().getId());
@@ -133,7 +133,7 @@ public class Runner {
             seatIdsForBooking.add("show1-auditorium1-0-8");
             seatIdsForBooking.add("show1-auditorium1-1-8");
             Ticket b1 = bookingService.createBooking3(theater1, "auditorium1", seatIdsForBooking, "show1",
-                    new User1(1, "chry"), new CardPaymentStrategy());
+                    new User1(1, "chry"), PaymentStrategyFactory.create(PaymentMethod.CREDIT));
             if (b1 != null)
                 System.out.println("Booking created for thread 2: " + b1.getBooking().getId());
             else System.out.println("No booking created for thread 2");

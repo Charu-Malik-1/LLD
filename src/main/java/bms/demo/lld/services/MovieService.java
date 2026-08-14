@@ -35,6 +35,19 @@ public class MovieService {
         return null;
     }
 
+    /** case-insensitive, partial-match search */
+    public List<Movie> searchMoviesByNameContains(String query) {
+        String q = query.toLowerCase();
+        List<Movie> result = new ArrayList<>();
+        for(Map.Entry<String,Movie> e: movingNameMapping.entrySet()){
+            String name=e.getValue().getName();
+            if (name.toLowerCase().contains(q)) {
+                result.add(e.getValue());
+            }
+        }
+       return result;
+    }
+
 //    public List<Movie> getAllMovies() {
 //        return this.movies;
 //    }

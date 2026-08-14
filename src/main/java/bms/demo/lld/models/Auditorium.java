@@ -21,7 +21,7 @@ public class Auditorium extends BaseModel {
     private int column;
     private Seat seatMetrix[][];
     private Map<String, Show> showMap;
-    private Map<Movie,Show> movieShowMap; // use for search service that is not completed
+//    private Map<Movie,Show> movieShowMap; // use for search service that is not completed
 
     public Auditorium(String auditoriumId, String name, int r, int c) {
         this.id = auditoriumId;
@@ -29,7 +29,7 @@ public class Auditorium extends BaseModel {
         this.row = r;
         this.column = c;
         showMap = new HashMap<>();
-        movieShowMap=new HashMap<>();
+//        movieShowMap=new HashMap<>();
         seatMetrix = new Seat[r][c];
         initialiseSeats();
     }
@@ -53,6 +53,7 @@ public class Auditorium extends BaseModel {
 
     public void addShow( Show show) {
         getShowMap().put(show.getId(),show);
-        movieShowMap.put(show.getMovie(),show);
+        show.addShowSeat(seatMetrix);
+//        movieShowMap.put(show.getMovie(),show);
     }
 }
