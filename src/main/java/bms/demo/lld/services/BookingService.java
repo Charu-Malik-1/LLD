@@ -2,6 +2,7 @@ package bms.demo.lld.services;
 
 import bms.demo.lld.models.*;
 import bms.demo.lld.strategy.IPaymentStrategy;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,16 +14,16 @@ public class BookingService {
     private TicketService ticketService;
 
     public BookingService(InMemorySchedulerService inMemoryCacheService, PaymentService paymentService
-    ,TicketService ticketService) {
+            , TicketService ticketService) {
         this.inMemorySchedulerService = inMemoryCacheService;
         this.paymentService = paymentService;
-        this.ticketService=ticketService;
+        this.ticketService = ticketService;
     }
 
     /**
      * here we are achieving more accuracy as for each showseat , we are generatuing the token and storing in map
      * that tocken shuld be same at the time of making the payment and updating in db
-     * */
+     */
     public Ticket createBooking3(Theater theater, String auditoriumId, List<String> seatIds,
                                  String showId, User1 user, IPaymentStrategy paymentStrategy) {
         Auditorium auditorium = theater.getAuditoriumMap().get(auditoriumId);
@@ -52,8 +53,7 @@ public class BookingService {
         }
 
         // ---- Phase 2: payment -- nothing held/blocked while this runs ----
-        String bookingId = buildBookingId(theater, auditorium, show, seatIds);
-        Booking booking = generateNewBooking(bookingId, amount);
+        Booking booking = generateNewBooking(theater,auditorium,user,show,seatIds, amount);
         // if payment is not suucess for this booking then also it will release
         if (!paymentService.isPymentSuccessful(paymentStrategy, booking)) {
             releaseAllShowSeats(finalShowSeatTokenMap);
@@ -68,7 +68,7 @@ public class BookingService {
             return null;
         }
         // phase 4 : create ticket (this doest need any lock)
-        Ticket ticket=ticketService.generateTicket(booking);
+        Ticket ticket = ticketService.generateTicket(booking);
         return ticket;
     }
 
@@ -96,12 +96,15 @@ public class BookingService {
             showSeat.release(token);
         }
     }
+
     private String buildBookingId(Theater theater, Auditorium auditorium, Show show, List<String> seatIds) {
         return theater.getId() + "-" + auditorium.getId() + "-" + show.getId() + "-" + String.join(",", seatIds);
     }
 
-    Booking generateNewBooking(String bookingId, int amount) {
-        Booking b = new Booking(bookingId, amount);
+    Booking generateNewBooking(Theater theater, Auditorium auditorium, User1 user, Show show, List<String> showSeats,
+                               double amount) {
+        String bookingId = buildBookingId(theater, auditorium, show, showSeats);
+        Booking b = new Booking(bookingId, theater,auditorium,user,show,showSeats,amount);
         return b;
     }
 }

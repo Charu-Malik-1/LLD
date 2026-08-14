@@ -10,7 +10,7 @@ public class PaymentService {
        return paymentStrategy.makePayment();
     }
     public boolean refund(IPaymentStrategy paymentStrategy, Booking booking) {
-        System.out.println("Refunding booking " + booking.getBookingId() + " amount " + booking.getAmount());
+        System.out.println("Refunding booking " + booking.getId() + " amount " + booking.getAmount());
         return paymentStrategy.refund();
     }
 }
