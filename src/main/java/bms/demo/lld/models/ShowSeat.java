@@ -27,7 +27,7 @@ public class ShowSeat extends BaseModel {
         this.cost = cost;
     }
     /** Try to reserve this seat under a fresh token. Fails if booked or already held. */
-    public synchronized boolean tryHold(String token) {
+    public synchronized boolean lockShowSeat(String token) {
         if (showSeatsStatus == ShowSeatsStatus.BOOKED) return false;
         if (holdToken != null) return false;
         holdToken = token;
@@ -36,7 +36,9 @@ public class ShowSeat extends BaseModel {
     }
 
     /** TTL expiry callback -- only clears the hold if it's STILL this token's (not a newer one's). */
-    public synchronized void expireHold(String token) {
+    /** Voluntary release (payment failed, or another seat in the same booking failed). */
+    public synchronized void release(String token) {
+        // identical rule: only release if it's still your hold
         if (token.equals(holdToken)) {
             holdToken = null;
             if (showSeatsStatus == ShowSeatsStatus.LOCKED) {
@@ -45,13 +47,8 @@ public class ShowSeat extends BaseModel {
         }
     }
 
-    /** Voluntary release (payment failed, or another seat in the same booking failed). */
-    public synchronized void release(String token) {
-        expireHold(token); // identical rule: only release if it's still your hold
-    }
-
     /** Final commit. Only succeeds if this token's hold is STILL the current one. */
-    public synchronized boolean tryMarkBooked(String token) {
+    public synchronized boolean bookSeatInDB(String token) {
         if (showSeatsStatus == ShowSeatsStatus.BOOKED) return false;
         if (!token.equals(holdToken)) return false; // your reservation isn't current anymore
         showSeatsStatus = ShowSeatsStatus.BOOKED;

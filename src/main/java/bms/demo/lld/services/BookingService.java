@@ -31,13 +31,13 @@ public class BookingService {
         for (String seatId : seatIds) {
             ShowSeat ss = show.getShowSeatMap().get(seatId);
             if (ss == null) {
-                releaseAll(held);
+                releaseAllShowSeats(held);
                 return null;
             }
-            String token = inMemoryCacheService.tryLock(ss);
+            String token = inMemoryCacheService.getLockWithScheduler(ss);
             if (token == null) {
                 System.out.println("Could not hold seat: " + seatId);
-                releaseAll(held);
+                releaseAllShowSeats(held);
                 return null;
             }
             held.put(ss, token);
@@ -49,7 +49,7 @@ public class BookingService {
         Booking booking = generateNewBooking(bookingId, amount);
 
         if (!paymentService.isPymentSuccessful(paymentStrategy, booking)) {
-            releaseAll(held);
+            releaseAllShowSeats(held);
             return null;
         }
 
@@ -57,7 +57,7 @@ public class BookingService {
         if (!confirmBooking(held)) {
             System.out.println("Lost a seat at confirmation time (stale hold), refunding payment");
             paymentService.refund(paymentStrategy, booking);
-            releaseAll(held);
+            releaseAllShowSeats(held);
             return null;
         }
 
@@ -69,7 +69,7 @@ public class BookingService {
         for (Map.Entry<ShowSeat, String> entry : held.entrySet()) {
             ShowSeat ss = entry.getKey();
             String token = entry.getValue();
-            if (!ss.tryMarkBooked(token)) {
+            if (!ss.bookSeatInDB(token)) {
                 confirmed.forEach(c -> c.release(held.get(c)));
                 return false;
             }
@@ -78,7 +78,7 @@ public class BookingService {
         return true;
     }
 
-    private void releaseAll(Map<ShowSeat, String> held) {
+    private void releaseAllShowSeats(Map<ShowSeat, String> held) {
         held.forEach((seat, token) -> seat.release(token));
     }
     private String buildBookingId(Theater theater, Auditorium auditorium, Show show, List<String> seatIds) {

@@ -20,9 +20,9 @@ public class InMemoryCacheService {
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
 
-    public String tryLock(ShowSeat seat) {
+    public String getLockWithScheduler(ShowSeat seat) {
         String token = UUID.randomUUID().toString();
-        if (!seat.tryHold(token)) {
+        if (!seat.lockShowSeat(token)) {
             return null;
         }
         scheduler.schedule(() -> seat.expireHold(token), 10, TimeUnit.SECONDS);
