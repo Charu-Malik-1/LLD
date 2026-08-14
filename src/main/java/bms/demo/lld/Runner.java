@@ -3,6 +3,8 @@ package bms.demo.lld;
 import bms.demo.lld.enums.PaymentMethod;
 import bms.demo.lld.factory.PaymentStrategyFactory;
 import bms.demo.lld.models.*;
+import bms.demo.lld.observer.EmailObserver;
+import bms.demo.lld.observer.Notification;
 import bms.demo.lld.services.*;
 import bms.demo.lld.strategy.CardPaymentStrategy;
 
@@ -23,6 +25,8 @@ public class Runner {
         inMemoryCacheService = new InMemorySchedulerService();
         ticketService=new TicketService();
         bookingService = new BookingService(inMemoryCacheService, paymentService,ticketService);
+        bookingService.addObserver(new Notification());
+        bookingService.addObserver(new EmailObserver());
     }
 
     private Date getDate(int dd, int mm, int h, int min) {
