@@ -6,6 +6,9 @@ import book.my.show.Booking.repositories.ShowSeatRepository;
 import book.my.show.Booking.repositories.TicketRepository;
 
 import book.my.show.Booking.repositories.User1Repository;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,21 +23,33 @@ public class RedisBookingService implements BookingService {
     private final TicketRepository ticketRepository;
     private final ShowRepository showRepository;
     private final User1Repository user1Repository;
+    private final MetricsService metricsService;
+    private static final Logger log =
+            LoggerFactory.getLogger(BookingService.class);
 
     public RedisBookingService(RedisService redisService, ShowSeatRepository showSeatRepository,
-                               TicketRepository tr, ShowRepository showRepository, User1Repository user1Repository) {
+                               TicketRepository tr, ShowRepository showRepository, User1Repository user1Repository,//){
+                               MetricsService metricsService) {
         cacheService = redisService;
         this.showSeatRepository = showSeatRepository;
         ticketRepository = tr;
         this.showRepository = showRepository;
         this.user1Repository = user1Repository;
+        this.metricsService=metricsService;
     }
 
+    @Override
+    public void getSeats(){
+        metricsService.incrementApiSuccess();
+        log.info("get seats called");
+        System.out.println("get seats called");
+    }
     @Override
     public boolean blockSeats(long showId, List<Long> seatIds, long userId) {
         // 1. fisrt check if seats are avaialble or not
         // a. check if seats are not booked already
 
+        metricsService.incrementApiSuccess();
         List<ShowSeat> showSeats = showSeatRepository.findAllByShowShowIdAndSeatSeatIdIn(showId, seatIds);
         System.out.println("printing db before logic");
         showSeats.forEach(showSeat -> {

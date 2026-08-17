@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Service
 public interface BookingService {
+    void getSeats();
 
     // Boolean fun that tell if able to block the seat or not.
     boolean blockSeats(long showId, List<Long> seatIds, long userId);

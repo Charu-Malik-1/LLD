@@ -17,8 +17,13 @@ public class BookingController {
         this.bookingService=bookingService;
     }
 
+    @GetMapping("/getSeats")
+    public void getSeats(){
+        bookingService.getSeats();
+    }
     @PostMapping("/block")
     public boolean blockSeats(@RequestBody BlockSeatsRequestDto blockSeatsRequestDto){
+
         return bookingService.blockSeats(blockSeatsRequestDto.getShowId(),
                 blockSeatsRequestDto.getSeatsId(),blockSeatsRequestDto.getUserId());
     }
