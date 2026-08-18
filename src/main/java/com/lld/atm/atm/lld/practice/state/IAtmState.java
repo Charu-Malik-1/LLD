@@ -1,28 +1,19 @@
 package com.lld.atm.atm.lld.practice.state;
 
-import com.lld.atm.atm.lld.practice.enums.AtmState;
+import com.lld.atm.atm.lld.practice.models.Atm;
+import com.lld.atm.atm.lld.practice.models.BankAccount;
 import com.lld.atm.atm.lld.practice.models.Card;
-import com.lld.atm.atm.lld.practice.models.Transaction;
+import com.lld.atm.atm.lld.practice.enums.TransactionType;
 
-public interface IAtmState {
-    void startTransaction();
+public abstract class IAtmState {
 
-//    void insertCardAndPin();
-
-//    void insertCardAndPin();
-
-    void insertCard();
-
-
-    void enterAmountAndPinState();
-
-    void dispenseCash();
-    void ejectCard();
-    void cancelTransaction();
-
-//    void cancelTransaction(int traId);
-
-//    void cancelTransaction(int traId);
-//
-    AtmState getState();
+    public void insertCard(Atm atm, Card card) {}
+    public void authenticatePin(Atm atm, Card card, int pin) {}
+    public void selectOperation(Atm atm, TransactionType tType) {}
+    public void cashWithdrawal(Atm atm, Card card, double amount) {}
+    public void displayBalance(Atm atm, Card card) {}
+    public void transferMoney(Atm atm, Card card, BankAccount toAccount, double amount) {}
+    public void changePin(Atm atm, Card card, int newPin) {}
+    public void cancelTransaction(Atm atm) {}
+    public void returnCard(Atm atm) {}
 }

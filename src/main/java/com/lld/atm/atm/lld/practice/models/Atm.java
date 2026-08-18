@@ -1,7 +1,8 @@
 package com.lld.atm.atm.lld.practice.models;
 
-import com.lld.atm.atm.lld.practice.service.CardService;
-import com.lld.atm.atm.lld.practice.state.*;
+
+import com.lld.atm.atm.lld.practice.state.IAtmState;
+import com.lld.atm.atm.lld.practice.state.IdleState;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,16 +11,25 @@ import lombok.Setter;
 public class Atm {
     private int id;
     private IAtmState currentAtmState;
-    private int amount;
+    private int atmBalance;
     private static Atm instance;
-    private Transaction currentTransaction;
-    private final CardService cardService;
 
-    public static Atm getInstance(int id, int amt,CardService cardService) {
+    private CardReader cardReader;
+    private CashDispenser cashDispenser;
+    private Keypad keypad;
+    private Screen screen;
+    private Printer printer;
+
+    // session varaible
+    private User user;
+    private Card insertedCard;
+    private boolean authenticated;
+
+    public static Atm getInstance(int id, int amt) {
         if (instance == null) {
             synchronized (Atm.class) {
                 if (instance == null) {
-                    Atm a = new Atm(id, amt,cardService);
+                    Atm a = new Atm(id, amt);
                     instance = a;
                 }
             }
@@ -27,43 +37,22 @@ public class Atm {
         return instance;
     }
 
-    private Atm(int id, int amount,CardService cardService) {
+    private Atm(int id, int amount) {
         this.id = id;
-       this.amount=amount;
-       this.cardService=cardService;
+        currentAtmState = new IdleState();
+        cardReader = new CardReader();
+        cashDispenser = new CashDispenser();
+        keypad = new Keypad();
+        screen = new Screen();
+        printer = new Printer();
     }
 
-    public void startTransaction(){
-        setCurrentAtmState(new ReadyForTransactionState(this));
-        currentAtmState.startTransaction();
-    }
-
-    public void insertCard(Card card) {
-        currentTransaction.setCard(card);
-        currentAtmState.insertCard();
-    }
-
-
-    public void enterAmountAndPinState(int amount, int pin) {
-        currentTransaction.setPin(pin);
-        currentTransaction.setAmount(amount);
-        currentAtmState.enterAmountAndPinState();
-    }
-
-    public void dispenseCash() {
-        currentAtmState.dispenseCash();
-    }
-
-    public void ejectCard() {
-        currentAtmState.ejectCard();
-    }
-
-    public void cancelTransaction() {
-
+    public void setActiveUser(User user) {
+        this.user = user;
     }
 
     public void changeState(IAtmState atmState) {
-        currentAtmState=atmState;
+        currentAtmState = atmState;
     }
 
 

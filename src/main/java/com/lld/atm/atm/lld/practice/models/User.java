@@ -1,14 +1,15 @@
 package com.lld.atm.atm.lld.practice.models;
 
-import com.lld.atm.atm.lld.practice.state.IAtmState;
-import com.lld.atm.atm.lld.practice.state.InitiateTransactionState;
+import lombok.Getter;
 
+@Getter
 public class User {
-    private int id;
+    private Card card;
+    private BankAccount bankAccount;
 
-    public User(int id){
-        this.id=id;
-
+    public User(BankAccount account,Card card){
+        bankAccount=account;
+        this.card=card;
     }
 
 

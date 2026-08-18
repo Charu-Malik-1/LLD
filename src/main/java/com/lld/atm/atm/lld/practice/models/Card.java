@@ -12,4 +12,12 @@ public class Card {
         this.cardNumber = cn;
         this.cardType = cardType;
     }
+
+    public boolean validatePin(int pin){
+        return true;
+    }
+
+    public void setPin(int newPin){
+
+    }
 }
