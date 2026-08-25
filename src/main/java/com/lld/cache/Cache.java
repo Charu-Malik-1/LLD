@@ -3,12 +3,12 @@ package com.lld.cache;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Cache {
+public class Cache<k,v> {
     private int id;
-    Map<Integer, Node> map;
+    Map<k,Node<k,v>> map;
     int capacity;
-    Node head;
-    Node tail;
+    Node<k,v> head;
+    Node<k,v> tail;
 
     public Cache(int id, int capacity) {
         this.id = id;
@@ -18,20 +18,20 @@ public class Cache {
         tail = null;
     }
 
-    public void put(User user) {
+    public void put(k key,v value) {
         if (capacity == 1) {
-            Node node = new Node(user.id, user);
-            if (map.containsKey(user.id))
+            Node<k,v> node = new Node(key,value);
+            if (map.containsKey(key))
                 return;
             else {
-                map.put(user.id, node);
+                map.put(key, node);
                 head = node;
                 tail = node;
                 capacity = 1;
             }
         }
-        else if (map.containsKey(user.id)) {
-            Node node = map.get(user.id);
+        else if (map.containsKey(key)) {
+            Node node = map.get(key);
             if (node == head) {
 
             } else if (node == tail) {
@@ -48,11 +48,10 @@ public class Cache {
                 head = node;
             }
         } else {
-            Node node = new Node(user.id, user);
+            Node<k,v> node = new Node<>(key, value);
             if (head == null) { // adding 1st element
                 head = node;
                 tail = node;
-                //  capacity++;
             } else if (capacity == map.size()) {
                 // remove 1 element and add another element, when cache has reached its max capacity
                 tail = tail.prev;
@@ -67,19 +66,18 @@ public class Cache {
                 node.next = head;
                 head.prev = node;
                 head = node;
-                //   capacity++;
             }
-            map.put(user.id, node);
+            map.put(key, node);
         }
     }
 
-    public User get(int id) {
+    public Node get(k id) {
         if (!map.containsKey(id)) {
             return null;
         } else { //get that node and put it at the head of the dll
-            Node node = map.get(id);
-            put(node.value);
-            return node.value;
+            Node<k,v> node = map.get(id);
+            put(id,node.value);
+            return node;
         }
     }
 
@@ -90,6 +88,5 @@ public class Cache {
             System.out.println(temp.id);
             temp=temp.next;
         }
-
     }
 }

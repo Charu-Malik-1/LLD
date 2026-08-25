@@ -1,12 +1,17 @@
 package com.lld.cache;
 
-public class Node {
-    int id;
-    User value;
-    Node next;
-    Node prev;
+import lombok.Getter;
+import lombok.Setter;
 
-    public Node(int key, User value) {
+//@Getter
+//@Setter
+public class Node<k,v> {
+    public k id;
+    public v value;
+    public Node next;
+    public Node prev;
+
+    public Node(k key, v value) {
         this.id = key;
         this.value = value;
         next = null;
