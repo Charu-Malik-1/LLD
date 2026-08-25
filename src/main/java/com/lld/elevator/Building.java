@@ -55,30 +55,30 @@ public class Building {
         es.shutdown();
     }
 
-//    public void runner() {
-//
-//        Display display = new Display();
-//        Elevator elevator = new Elevator(1, 10, 0, display);
-//        Elevator elevator2 = new Elevator(2, 10, 0, display);
-//        addElevator(elevator);
-//        addElevator(elevator2);
-//
-//
-//        Thread t = new Thread(elevator);
-//        t.start();
-//        elevator.request(2);
-//        elevator.request(5);
-//        elevator.request(8);
-//
-//        try {
-//            System.out.println("sleep--");
-//            t.sleep(10000);
-//            elevator.request(2);
-//            elevator.request(5);
-//        } catch (InterruptedException e) {
-//        }
-//
-//        System.out.println("now requesting 7 floor");
-//        elevator.request(7);
-//    }
+    public void runner() {
+
+        Display display = new Display();
+        Elevator elevator = new Elevator(1, 10, 0, display);
+        Elevator elevator2 = new Elevator(2, 10, 0, display);
+        addElevator(elevator);
+        addElevator(elevator2);
+
+
+        Thread t = new Thread(elevator);
+        t.start();
+        elevator.request(2);
+        elevator.request(5);
+        elevator.request(8);
+
+        try {
+            System.out.println("sleep--");
+            t.sleep(10000);
+            elevator.request(2);
+            elevator.request(5);
+        } catch (InterruptedException e) {
+        }
+
+        System.out.println("now requesting 7 floor");
+        elevator.request(7);
+    }
 }
