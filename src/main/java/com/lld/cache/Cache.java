@@ -2,23 +2,29 @@ package com.lld.cache;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Cache<k,v> {
     private int id;
-    Map<k,Node<k,v>> map;
+    ConcurrentHashMap<k,Node<k,v>> map;
     int capacity;
     Node<k,v> head;
     Node<k,v> tail;
+    private final ReentrantReadWriteLock lock;
 
     public Cache(int id, int capacity) {
         this.id = id;
         this.capacity = capacity;
-        map = new HashMap<>();
+        map = new ConcurrentHashMap<>();
         head = null;
         tail = null;
+        this.lock = new ReentrantReadWriteLock();
     }
 
     public void put(k key,v value) {
+        lock.writeLock().lock();
+        try{
         if (capacity == 1) {
             Node<k,v> node = new Node(key,value);
             if (map.containsKey(key))
@@ -68,19 +74,33 @@ public class Cache<k,v> {
                 head = node;
             }
             map.put(key, node);
+        }}finally {
+            lock.writeLock().unlock();
         }
     }
 
     public Node get(k id) {
+        lock.writeLock().lock();
+        try{
         if (!map.containsKey(id)) {
             return null;
         } else { //get that node and put it at the head of the dll
             Node<k,v> node = map.get(id);
             put(id,node.value);
             return node;
+        }}finally {
+            lock.writeLock().unlock();
         }
     }
 
+    public int size() {
+        lock.readLock().lock();
+        try {
+            return map.size();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
     public void print(){
         System.out.println("printing cache..");
         Node temp=head;
