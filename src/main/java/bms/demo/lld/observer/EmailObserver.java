@@ -3,7 +3,7 @@ package bms.demo.lld.observer;
 import bms.demo.lld.models.Booking;
 import bms.demo.lld.models.User1;
 
-public class EmailObserver implements BookingObserver{
+public class EmailObserver implements IObserver {
 
     @Override
     public void onBookingConfirmed(Booking booking, User1 user) {

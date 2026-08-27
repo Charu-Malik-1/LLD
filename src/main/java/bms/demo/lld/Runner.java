@@ -4,9 +4,8 @@ import bms.demo.lld.enums.PaymentMethod;
 import bms.demo.lld.factory.PaymentStrategyFactory;
 import bms.demo.lld.models.*;
 import bms.demo.lld.observer.EmailObserver;
-import bms.demo.lld.observer.Notification;
+import bms.demo.lld.observer.MessageObserver;
 import bms.demo.lld.services.*;
-import bms.demo.lld.strategy.CardPaymentStrategy;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,15 +17,16 @@ public class Runner {
     PaymentService paymentService;
     InMemorySchedulerService inMemoryCacheService;
     TicketService ticketService;
+    NotificationService notificationService
 
     public Runner() {
         movieService = new MovieService();
         paymentService = new PaymentService();
         inMemoryCacheService = new InMemorySchedulerService();
         ticketService=new TicketService();
-        bookingService = new BookingService(inMemoryCacheService, paymentService,ticketService);
-        bookingService.addObserver(new Notification());
-        bookingService.addObserver(new EmailObserver());
+        notificationService=new NotificationService();
+        bookingService = new BookingService(inMemoryCacheService, paymentService,ticketService,notificationService);
+
     }
 
     private Date getDate(int dd, int mm, int h, int min) {
@@ -99,6 +99,9 @@ public class Runner {
         movieService.addMovie(movie2);
         movieService.addMovie(movie3);
         movieService.addMovie(movie4);
+
+        notificationService.addObserver(new EmailObserver());
+        notificationService.addObserver(new MessageObserver());
 
 //        showAuditoriumManager.printAllShowsInAuditorium(theater1,"auditorium1");
 

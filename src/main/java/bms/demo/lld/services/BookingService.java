@@ -1,7 +1,6 @@
 package bms.demo.lld.services;
 
 import bms.demo.lld.models.*;
-import bms.demo.lld.observer.BookingObserver;
 import bms.demo.lld.strategy.IPaymentStrategy;
 
 import java.util.ArrayList;
@@ -13,28 +12,17 @@ public class BookingService {
     private InMemorySchedulerService inMemorySchedulerService;
     private PaymentService paymentService;
     private TicketService ticketService;
-    private final List<BookingObserver> observers=new ArrayList<>();
+    private NotificationService notoficationService;
 
     public BookingService(InMemorySchedulerService inMemoryCacheService, PaymentService paymentService
-            , TicketService ticketService) {
+            , TicketService ticketService, NotificationService ns) {
         this.inMemorySchedulerService = inMemoryCacheService;
         this.paymentService = paymentService;
         this.ticketService = ticketService;
+        this.notoficationService=ns;
     }
 
-    public void addObserver(BookingObserver bookingObserver){
-        observers.add(bookingObserver);
-    }
 
-    private void notifyObserver(Booking booking,User1 user1){
-        for(BookingObserver observer:observers){
-            try{
-                observer.onBookingConfirmed(booking,user1);
-            }catch (Exception e){
-                System.out.println("observer  failed");
-            }
-        }
-    }
     /**
      * here we are achieving more accuracy as for each showseat , we are generatuing the token and storing in map
      * that tocken shuld be same at the time of making the payment and updating in db
@@ -86,7 +74,7 @@ public class BookingService {
         Ticket ticket = ticketService.generateTicket(booking);
 
         // phase 5 : we can notify obserever on success booking
-        notifyObserver(ticket.getBooking(),user);
+        notoficationService.notifyAllObserevre(ticket.getBooking(),user);
         return ticket;
     }
 
